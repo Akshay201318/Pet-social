@@ -3,7 +3,7 @@ import Footer from './Footer';
 import Navbar from './Navbar';
 import Header from './Header';
 import "../form.css"
-import {generatePath, Link} from 'react-router-dom';
+import {withRouter, Link} from 'react-router-dom';
 let initialState = {
   username: "",
   password: "",
@@ -25,6 +25,9 @@ class register extends React.Component {
     super(props);
     this.state = initialState;
       
+  }
+  nextPath(path) {
+    this.props.history.push(path);
   }
 
   handleChange = event => {
@@ -154,10 +157,10 @@ class register extends React.Component {
     event.preventDefault();
     const isValid = this.validate();
     if (isValid) {
+      alert("Your account has been created Successfully!!");
       this.setState(initialState);
       console.log("after++)))))))))", this.state);
     }
-
   }
 
   render() {
@@ -172,26 +175,60 @@ class register extends React.Component {
               <div className="register_sec">
                 <h1>Create An Account</h1>
                 <ul>
-                  <li><span>Username</span><input style={{ color: "blue" }} type="text" name="username" placeholder="Enter your username" value={this.state.username} onChange={this.handleChange} required /></li>
+
+                  <li><span>Username</span><input style={{ color: "blue" }} 
+                  type="text" name="username" placeholder="Enter your username" 
+                  value={this.state.username} onChange={this.handleChange} required />
+                  </li>
                   <li><div style={{ color: "red" }}>{this.state.userNameErr}</div></li>
-                  <li><span>Password</span><input style={{ color: "blue" }} type="text" className="pw" name="password" placeholder="Enter your password" value={this.state.password} onChange={this.handleChange} required /></li>
+
+
+                  <li><span>Password</span><input style={{ color: "blue" }} 
+                  type="text" className="pw" name="password" placeholder="Enter your password"
+                   value={this.state.password} onChange={this.handleChange} required /></li>
                   <li><div style={{ color: "red" }}>{this.state.passwordErr}</div></li>
-                  <li><span>Email</span><input style={{ color: "blue" }} type="text" name="email" placeholder="Enter your email" value={this.state.email} onChange={this.handleChange} required /></li>
+
+
+                  <li><span>Email</span><input style={{ color: "blue" }} type="text" 
+                  name="email" placeholder="Enter your email" value={this.state.email}
+                   onChange={this.handleChange} required /></li>
                   <li><div style={{ color: "red" }}>{this.state.emailErr}</div></li>
-                  <li><span>First Name</span><input style={{ color: "blue" }} type="text" name="firstname" placeholder="Enter your first name" value={this.state.firstname} onChange={this.handleChange} required /></li>
+
+
+                  <li><span>First Name</span><input style={{ color: "blue" }} type="text"
+                   name="firstname" placeholder="Enter your first name" 
+                   value={this.state.firstname} onChange={this.handleChange} required /></li>
                   <li><div style={{ color: "red" }}>{this.state.firstnameErr}</div></li>
-                  <li><span>Last Name</span><input style={{ color: "blue" }} type="text" name="lastname" placeholder="Enter your last name" value={this.state.lastname} onChange={this.handleChange} required /></li>
+
+
+                  <li><span>Last Name</span><input style={{ color: "blue" }} type="text" 
+                  name="lastname" placeholder="Enter your last name" 
+                  value={this.state.lastname} onChange={this.handleChange} required /></li>
                   <li><div style={{ color: "red" }}>{this.state.lastnameErr}</div></li>
-                  <li><input type="checkbox" name="checkbox" checked={this.state.checkbox} onChange={this.handleChange} required />I agree to Term &amp; Conditions</li>
+
+
+                  <li><input type="checkbox" name="checkbox" checked={this.state.checkbox} 
+                  onChange={this.handleChange} required />I agree to Term &amp; Conditions</li>
                   <li><div style={{ color: "red" }}>{this.state.checkboxErr}</div></li>
-                  <li><Link to={this.validate ? '/login' : '/'}><input type="submit" onClick={this.handleSubmit}/></Link></li>
+
+
+                  <li><input type="submit" onClick={(e) => { this.handleSubmit(e); 
+                    let i=this.validate(); console.log(i); 
+                    if(i){this.nextPath('/login'); }} }/>
+                  </li>
                 </ul>
-                <div className="addtnal_acnt">I already have an account.<Link to={'/login'}>Login My Account !</Link></div>
+                <div className="addtnal_acnt">I already have an account.
+                <Link to={'/login'}>Login My Account !</Link></div>
               </div>
             </div>
             <div className="content_lft">
               <h1>Welcome from PPL!</h1>
-              <p className="discrptn">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. </p>
+              <p className="discrptn">There are many variations of passages of
+               Lorem Ipsum available, but the majority have suffered alteration 
+               in some form, by injected humour, or randomised words which don't look 
+               even slightly believable. If you are going to use a passage of Lorem Ipsum,
+                you need to be sure there isn't anything embarrassing hidden in the middle
+                 of text. </p>
               <img src="images/img_9.png" alt="" /> </div>
           </div>
         </div>
@@ -202,4 +239,4 @@ class register extends React.Component {
   }
 }
 
-export default register;
+export default withRouter(register);
