@@ -3,6 +3,7 @@ import Footer from './Footer';
 import Navbar from './Navbar';
 import Header from './Header';
 import "../form.css"
+import {generatePath, Link} from 'react-router-dom';
 let initialState = {
   username: "",
   password: "",
@@ -15,7 +16,7 @@ let initialState = {
   passwordErr: "",
   firstnameErr: "",
   lastnameErr: "",
-  checkboxErr: ""
+  checkboxErr: "",
 
 }
 class register extends React.Component {
@@ -156,7 +157,6 @@ class register extends React.Component {
       this.setState(initialState);
       console.log("after++)))))))))", this.state);
     }
-    
 
   }
 
@@ -184,9 +184,9 @@ class register extends React.Component {
                   <li><div style={{ color: "red" }}>{this.state.lastnameErr}</div></li>
                   <li><input type="checkbox" name="checkbox" checked={this.state.checkbox} onChange={this.handleChange} required />I agree to Term &amp; Conditions</li>
                   <li><div style={{ color: "red" }}>{this.state.checkboxErr}</div></li>
-                  <li><input type="submit" onClick={this.handleSubmit} /></li>
+                  <li><Link to={this.validate ? '/login' : '/'}><input type="submit" onClick={this.handleSubmit}/></Link></li>
                 </ul>
-                <div className="addtnal_acnt">I already have an account.<a href>Login My Account !</a></div>
+                <div className="addtnal_acnt">I already have an account.<Link to={'/login'}>Login My Account !</Link></div>
               </div>
             </div>
             <div className="content_lft">

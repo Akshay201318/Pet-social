@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import Header from './Header';
+import {Link} from 'react-router-dom';
 import '../form.css'
 
 let initialState = {
@@ -108,7 +109,7 @@ class login extends React.Component {
                   <li><input type="checkbox" name="checkbox" checked={this.state.checkbox} onChange={this.handleChange}/>Remember Me</li>
                   <li><input type="submit" onClick={this.handleSubmit} defaultValue="Log In" /><a href>Forgot Password</a></li>
                 </ul>
-                <div className="addtnal_acnt">I do not have any account yet.<a href>Create My Account Now !</a></div>
+                <div className="addtnal_acnt">I do not have any account yet.<Link to={'/'}>Create My Account Now !</Link></div>
               </div>
             </div>
             <div className="content_lft">
