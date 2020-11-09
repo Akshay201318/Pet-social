@@ -1,10 +1,25 @@
 import React from'react';
 
 class contentRight extends React.Component{
+
+  constructor(props){
+    super(props);
+  }
+
+
+  handlePost = ()=>{
+    var x = document.getElementById("postForm");
+       if (x.style.display === "none") {
+        x.style.display = "block";
+       } else {
+        x.style.display = "none";
+       }
+  }
+
     render(){
         return(
             <div className="content_rgt">
-              <div className="rght_btn"> <span className="rght_btn_icon"><img src="images/btn_iconb.png" alt="up" /></span> <span className="btn_sep"><img src="images/btn_sep.png" alt="sep" /></span> <a href="#">Upload Post</a> </div>
+              <div className="rght_btn" > <span className="rght_btn_icon"><img src="images/btn_iconb.png" alt="up" /></span> <span className="btn_sep"><img src="images/btn_sep.png" alt="sep" /></span> <a href="#" onClick ={this.handlePost}>Upload Post</a> </div>
               <div className="rght_btn"> <span className="rght_btn_icon"><img src="images/btn_icona.png" alt="up" /></span> <span className="btn_sep"><img src="images/btn_sep.png" alt="sep" /></span> <a href="#">Invite Friends</a> </div>
               <div className="rght_cate">
                 <div className="rght_cate_hd" id="rght_cat_bg">Categories</div>

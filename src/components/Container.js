@@ -6,6 +6,7 @@ import DogImgContainer from './DogImgContainer';
 import Navbar from './Navbar';
 import Header from './Header';
 import Footer from './Footer';
+import PostForm from './postForm';
 
 class container extends React.Component{
     render(){
@@ -17,11 +18,13 @@ class container extends React.Component{
             <div className="content">
               <ContentRight/>
               <Posts/>
+              
               <CatImgContainer/>
               <DogImgContainer/> 
            </div>
               <div className="clear" />
               </div>
+              <PostForm/>
               <Footer />
             </div>
         )
