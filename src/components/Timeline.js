@@ -1,22 +1,18 @@
-import React from 'react';
-import Footer from './Footer';
-import Navbar from './Navbar';
-import Header from './Header';
-import Container from './Container';
+import React from "react";
+import Footer from "./Footer";
+import Navbar from "./Navbar";
+import Header from "./Header";
+import Container from "./Container";
 
-class timeline extends React.Component {
-
-  render(){
+function Timeline() {
   return (
     <div>
-         <Navbar/>
-         <Header/>
-         <Container/>
-        <Footer />
-      </div>
-
+      <Navbar />
+      <Header />
+      <Container />
+      <Footer />
+    </div>
   );
 }
-}
 
-export default timeline;
+export default Timeline;

@@ -1,203 +1,196 @@
-import React from "react";
+import React, { useState } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import Header from "./Header";
 import { withRouter, Link } from "react-router-dom";
 import "../form.css";
-import Axios from "axios";
 
-let initialState = {
-  password: "",
-  email: "",
-  checkbox: false,
-  emailErr: "",
-  passwordErr: "",
-};
-class login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = initialState;
+//This is a custom hook for creating form inputs
+
+function useFormInputs(initialValue) {
+  const [value, setValue] = useState(initialValue);
+
+  function handleChange(e) {
+    const isCheckbox = e.target.type === "checkbox";
+
+    e.target.name == isCheckbox
+      ? setValue(e.target.checked)
+      : setValue(e.target.value);
   }
 
-  nextPath(path) {
-    this.props.history.push(path);
+  function reset(e) {
+    const isCheckbox = e.target.type === "checkbox";
+    e.target.name == isCheckbox ? setValue(false) : setValue("");
   }
 
-  // getinIt = async () => {
-  //   let response = await Axios.get("http://localhost:5000/", {
-  //     data: this.state,
-  //   });
-  //   console.log(response.data);
-  // };
-  // componentDidMount() {
-  //   this.getinIt();
-  // }
-
-  handleChange = (event) => {
-    const isCheckbox = event.target.type === "checkbox";
-
-    this.setState({
-      [event.target.name]: isCheckbox
-        ? event.target.checked
-        : event.target.value,
-    });
+  return {
+    value,
+    handleChange,
+    reset,
   };
+}
 
-  validate = () => {
-    let fla = true;
+function Login(props) {
+  // for changing path on successfull login
+  function nextPath(path) {
+    props.history.push(path);
+  }
+
+  //creating all the form inputs and there handlers
+
+  const email = useFormInputs("");
+  const password = useFormInputs("");
+  const checkbox = useFormInputs(false);
+  const [emailErr, setEmailErr] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
+
+  //Validating form inputs
+
+  function validate() {
+    let flag = true;
     console.log("Hello! validate");
-    if (this.state.email === "") {
-      this.setState({
-        emailErr: "Email should not be empty!",
-      });
-      fla = false;
-    } else if (this.state.email.length < 8) {
-      this.setState({
-        emailErr: "Please enter a valid email!",
-      });
-      fla = false;
-    } else if (
-      !(this.state.email.includes("@") && this.state.email.includes(".com"))
-    ) {
-      this.setState({
-        emailErr: "Please include an @ or .com in the email!",
-      });
-      fla = false;
+    if (email.value === undefined) {
+      setEmailErr("Email should not be empty!");
+      flag = false;
+    } else if (email.value.length < 8) {
+      setEmailErr("Please enter a valid email!");
+      flag = false;
+    } else if (!(email.value.includes("@") && email.value.includes(".com"))) {
+      setEmailErr("Please include an @ or .com in the email!");
+      flag = false;
     } else {
-      this.setState({
-        emailErr: "",
-      });
+      setEmailErr("");
     }
-    if (this.state.password === "") {
-      this.setState({
-        passwordErr: "Password must not be empty!",
-      });
-      fla = false;
+    if (password.value === "") {
+      setPasswordErr("Password must not be empty!");
+      flag = false;
     } else if (
-      !this.state.password.match(
+      !password.value.match(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
       )
     ) {
-      this.setState({
-        passwordErr:
-          "Password must contains minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character!",
-      });
-      fla = false;
+      setPasswordErr(
+        "Password must contains minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character!"
+      );
+      flag = false;
     } else {
-      this.setState({
-        passwordErr: "",
-      });
+      setPasswordErr("");
     }
-    return fla;
-  };
+    return flag;
+  }
 
-  handleSubmit = (event) => {
+  //submit function for submitting login credentials
+
+  function handleSubmit(event) {
     console.log("Hello! submit");
     event.preventDefault();
-    const isValid = this.validate();
+    const isValid = validate();
     if (isValid) {
       alert("Successfully!! logged In!");
-      this.setState(initialState);
-      console.log(this.state);
+      console.log(email.value);
+      console.log(password.value);
+      email.reset(event);
+      password.reset(event);
+      setEmailErr("");
+      setPasswordErr("");
+      return true;
     }
-  };
+    return false;
+  }
 
-  render() {
-    return (
-      <div>
-        <title>Login Account</title>
-        <Navbar />
-        <Header />
-        <div className="container">
-          <div className="content">
-            <div className="content_rgt">
-              <div className="login_sec">
-                <h1>Log In</h1>
-                <ul>
-                  <li>
-                    <span>Email-ID</span>
-                    <input
-                      style={{ color: "blue" }}
-                      type="text"
-                      name="email"
-                      placeholder="Enter your email"
-                      value={this.state.email}
-                      onChange={this.handleChange}
-                      required
-                    />
-                  </li>
-                  <li>
-                    <div style={{ color: "red" }}>{this.state.emailErr}</div>
-                  </li>
+  return (
+    <div>
+      <title>Login Account</title>
+      <Navbar />
+      <Header />
+      <div className="container">
+        <div className="content">
+          <div className="content_rgt">
+            <div className="login_sec">
+              <h1>Log In</h1>
+              <ul>
+                <li>
+                  <span>Email-ID</span>
+                  <input
+                    style={{ color: "blue" }}
+                    type="text"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={email.value}
+                    onChange={email.handleChange}
+                    required
+                  />
+                </li>
+                <li>
+                  <div style={{ color: "red" }}>{emailErr}</div>
+                </li>
 
-                  <li>
-                    <span>Password</span>
-                    <input
-                      style={{ color: "blue" }}
-                      type="text"
-                      name="password"
-                      className="pw"
-                      placeholder="Enter your password"
-                      value={this.state.password}
-                      onChange={this.handleChange}
-                      required
-                    />
-                  </li>
-                  <li>
-                    <div style={{ color: "red" }}>{this.state.passwordErr}</div>
-                  </li>
+                <li>
+                  <span>Password</span>
+                  <input
+                    style={{ color: "blue" }}
+                    type="text"
+                    name="password"
+                    className="pw"
+                    placeholder="Enter your password"
+                    value={password.value}
+                    onChange={password.handleChange}
+                    required
+                  />
+                </li>
+                <li>
+                  <div style={{ color: "red" }}>{passwordErr}</div>
+                </li>
 
-                  <li>
-                    <input
-                      type="checkbox"
-                      name="checkbox"
-                      checked={this.state.checkbox}
-                      onChange={this.handleChange}
-                    />
-                    Remember Me
-                  </li>
+                <li>
+                  <input
+                    type="checkbox"
+                    name="checkbox"
+                    checked={checkbox.value}
+                    onChange={checkbox.handleChange}
+                  />
+                  Remember Me
+                </li>
 
-                  <li>
-                    <input
-                      type="submit"
-                      onClick={(e) => {
-                        this.handleSubmit(e);
-                        let i = this.validate();
-                        console.log(i);
-                        if (i) {
-                          this.nextPath("/home");
-                        }
-                      }}
-                      defaultValue="Log In"
-                    />
-                    <a href>Forgot Password</a>
-                  </li>
-                </ul>
-                <div className="addtnal_acnt">
-                  I do not have any account yet.
-                  <Link to={"/"}>Create My Account Now !</Link>
-                </div>
+                <li>
+                  <input
+                    type="submit"
+                    onClick={(e) => {
+                      let i = handleSubmit(e);
+                      console.log(i);
+                      if (i) {
+                        nextPath("/home");
+                      }
+                    }}
+                    defaultValue="Log In"
+                  />
+                  <a href>Forgot Password</a>
+                </li>
+              </ul>
+              <div className="addtnal_acnt">
+                I do not have any account yet.
+                <Link to={"/"}>Create My Account Now !</Link>
               </div>
             </div>
-            <div className="content_lft">
-              <h1>Welcome from PPL!</h1>
-              <p className="discrptn">
-                There are many variations of passages of Lorem Ipsum available,
-                but the majority have suffered alteration in some form, by
-                injected humour, or randomised words which don't look even
-                slightly believable. If you are going to use a passage of Lorem
-                Ipsum, you need to be sure there isn't anything embarrassing
-                hidden in the middle of text.
-              </p>
-              <img src="images/img_9.png" alt="" />
-            </div>
+          </div>
+          <div className="content_lft">
+            <h1>Welcome from PPL!</h1>
+            <p className="discrptn">
+              There are many variations of passages of Lorem Ipsum available,
+              but the majority have suffered alteration in some form, by
+              injected humour, or randomised words which don't look even
+              slightly believable. If you are going to use a passage of Lorem
+              Ipsum, you need to be sure there isn't anything embarrassing
+              hidden in the middle of text.
+            </p>
+            <img src="images/img_9.png" alt="" />
           </div>
         </div>
-        <div className="clear" />
-        <Footer />
       </div>
-    );
-  }
+      <div className="clear" />
+      <Footer />
+    </div>
+  );
 }
 
-export default withRouter(login);
+export default withRouter(Login);

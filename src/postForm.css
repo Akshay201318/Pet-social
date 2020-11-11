@@ -1,26 +1,24 @@
-.form{
-    position: absolute;
-    border: 1px solid orange;
-    height: 30vh;
-    width: 30vw;
-    display: none;
-    background-color: papayawhip;
-   
+.form {
+  position: absolute;
+  border: 1px solid orange;
+  height: 30vh;
+  width: 30vw;
+  display: block;
+  background-color: papayawhip;
 }
-.form input{
-    margin-top: 5%;
-    margin-left: 20%;
+.form input {
+  margin-top: 5%;
+  margin-left: 20%;
 }
-#cancel{
-    background-color: rgba(207, 58, 58, 0.911);
-    border: none;
-    margin-top: -24px;
+#cancel {
+  background-color: rgba(207, 58, 58, 0.911);
+  border: none;
+  margin-top: -24px;
 }
-#formDiv{
-    margin-top: -200vh;
-    margin-left: 50vw;
-   
+#formDiv {
+  margin-top: -200vh;
+  margin-left: 50vw;
 }
-#name{
-    margin-left: 5%;
+#name {
+  margin-left: 5%;
 }
