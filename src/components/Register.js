@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import Header from "./Header";
+import { useDispatch } from "react-redux";
 import "../form.css";
 import { withRouter, Link } from "react-router-dom";
-import axios from "axios";
+//import axios from "axios";
+import { add_user } from "../action";
 
 //This is a custom hook for creating form inputs
 
@@ -14,14 +16,14 @@ function useFormInputs(initialValue) {
   function handleChange(e) {
     const isCheckbox = e.target.type === "checkbox";
 
-    e.target.name == isCheckbox
+    e.target.name === isCheckbox
       ? setValue(e.target.checked)
       : setValue(e.target.value);
   }
 
   function reset(e) {
     const isCheckbox = e.target.type === "checkbox";
-    e.target.name == isCheckbox ? setValue(false) : setValue("");
+    e.target.name === isCheckbox ? setValue(false) : setValue("");
   }
 
   return {
@@ -32,6 +34,7 @@ function useFormInputs(initialValue) {
 }
 
 function Register(props) {
+  const dispatch = useDispatch();
   // for changing path on successfull Register
   function nextPath(path) {
     props.history.push(path);
@@ -165,18 +168,19 @@ function Register(props) {
         checkbox: checkbox.value,
       };
       console.log("after++)))))))))", user);
-      let response = await axios.post("http://localhost:5000/register", {
-        data: user,
-      });
-      console.log(response.data);
+      // let response = await axios.post("http://localhost:5000/register", {
+      //   data: user,
+      // });
+      // console.log(response.data);
+      dispatch(add_user(user));
 
       alert("Your account has been created Successfully!!");
-      username.reset();
-      email.reset();
-      password.reset();
-      firstName.reset();
-      lastName.reset();
-      checkbox.reset();
+      username.reset(event);
+      email.reset(event);
+      password.reset(event);
+      firstName.reset(event);
+      lastName.reset(event);
+      checkbox.reset(event);
       setUsernameErr("");
       setEmailErr("");
       setPasswordErr("");
@@ -206,7 +210,7 @@ function Register(props) {
                     name="username"
                     placeholder="Enter your username"
                     value={username.value}
-                    onChange={username.handleChange}
+                    onChange={(e) => username.handleChange(e)}
                     required
                   />
                 </li>
@@ -223,7 +227,7 @@ function Register(props) {
                     name="password"
                     placeholder="Enter your password"
                     value={password.value}
-                    onChange={password.handleChange}
+                    onChange={(e) => password.handleChange(e)}
                     required
                   />
                 </li>
@@ -239,7 +243,7 @@ function Register(props) {
                     name="email"
                     placeholder="Enter your email"
                     value={email.value}
-                    onChange={email.handleChange}
+                    onChange={(e) => email.handleChange(e)}
                     required
                   />
                 </li>
@@ -255,7 +259,7 @@ function Register(props) {
                     name="firstname"
                     placeholder="Enter your first name"
                     value={firstName.value}
-                    onChange={firstName.handleChange}
+                    onChange={(e) => firstName.handleChange(e)}
                     required
                   />
                 </li>
@@ -271,7 +275,7 @@ function Register(props) {
                     name="lastname"
                     placeholder="Enter your last name"
                     value={lastName.value}
-                    onChange={lastName.handleChange}
+                    onChange={(e) => lastName.handleChange(e)}
                     required
                   />
                 </li>
@@ -284,7 +288,7 @@ function Register(props) {
                     type="checkbox"
                     name="checkbox"
                     checked={checkbox.value}
-                    onChange={checkbox.handleChange}
+                    onChange={(e) => checkbox.handleChange(e)}
                     required
                   />
                   I agree to Term &amp; Conditions

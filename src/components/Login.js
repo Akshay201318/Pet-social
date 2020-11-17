@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import Header from "./Header";
 import { withRouter, Link } from "react-router-dom";
 import "../form.css";
+import { check_user } from "../action";
 
 //This is a custom hook for creating form inputs
 
@@ -31,6 +33,7 @@ function useFormInputs(initialValue) {
 }
 
 function Login(props) {
+  const dispatch = useDispatch();
   // for changing path on successfull login
   function nextPath(path) {
     props.history.push(path);
@@ -86,6 +89,13 @@ function Login(props) {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
+      let user = {
+        email: email.value,
+        password: password.value,
+        checkbox: checkbox.value,
+      };
+
+      dispatch(check_user(user));
       alert("Successfully!! logged In!");
       console.log(email.value);
       console.log(password.value);
@@ -117,7 +127,7 @@ function Login(props) {
                     name="email"
                     placeholder="Enter your email"
                     value={email.value}
-                    onChange={email.handleChange}
+                    onChange={(e) => email.handleChange(e)}
                     required
                   />
                 </li>
@@ -134,7 +144,7 @@ function Login(props) {
                     className="pw"
                     placeholder="Enter your password"
                     value={password.value}
-                    onChange={password.handleChange}
+                    onChange={(e) => password.handleChange(e)}
                     required
                   />
                 </li>
@@ -147,7 +157,7 @@ function Login(props) {
                     type="checkbox"
                     name="checkbox"
                     checked={checkbox.value}
-                    onChange={checkbox.handleChange}
+                    onChange={(e) => checkbox.handleChange(e)}
                   />
                   Remember Me
                 </li>

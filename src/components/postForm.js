@@ -9,14 +9,14 @@ function useFormInputs(initialValue) {
   function handleChange(e) {
     const isCheckbox = e.target.type === "checkbox";
 
-    e.target.name == isCheckbox
+    e.target.name === isCheckbox
       ? setValue(e.target.checked)
       : setValue(e.target.value);
   }
 
   function reset(e) {
     const isCheckbox = e.target.type === "checkbox";
-    e.target.name == isCheckbox ? setValue(false) : setValue("");
+    e.target.name === isCheckbox ? setValue(false) : setValue("");
   }
 
   return {
