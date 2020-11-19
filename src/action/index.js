@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setUserData } from "../components/Login";
 const { default: user } = require("../Reducer");
 
 const ADD_USER = (user) => ({
@@ -25,23 +26,15 @@ export const add_user = (user) => async (dispatch) => {
   }
 };
 
-
-const CHECK_USER = (user) => ({
-  type: "Add_User",
-  payload: user,
-});
-
 //async action creater for login
 
-export const check_user = (user) => async (dispatch) => {
+export const storeUser = (user) => async (dispatch) => {
   try {
-    let response = await axios.post("http://localhost:5000/login", {
-      data: user,
+    dispatch({
+      type: "Add_User",
+      payload: user,
     });
-
-    console.log("request:" + response.data);
-
-    dispatch(CHECK_USER(response.data));
+    return true;
   } catch (e) {
     dispatch(SET_ERROR("User login failed"));
   }

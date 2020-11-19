@@ -1,15 +1,15 @@
 import React from "react";
 
-function ContentRight(props) {
-
+const ContentRight = (props) => {
   //function for removing or adding form at the screen
-  function handlePost() {
+  const handlePost = (e) => {
+    console.log("this the form");
     if (props.user) {
       props.change(0);
     } else {
       props.change(1);
     }
-  }
+  };
   return (
     <div>
       <div className="content_rgt">
@@ -21,7 +21,11 @@ function ContentRight(props) {
           <span className="btn_sep">
             <img src="images/btn_sep.png" alt="sep" />
           </span>{" "}
-          <a href="#" onClick={handlePost}>
+          <a
+            onClick={(e) => {
+              handlePost(e);
+            }}
+          >
             Upload Post
           </a>{" "}
         </div>
@@ -121,6 +125,6 @@ function ContentRight(props) {
       </div>
     </div>
   );
-}
+};
 
 export default ContentRight;

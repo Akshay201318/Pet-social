@@ -9,13 +9,10 @@ import Footer from "./Footer";
 import PostForm from "./postForm";
 //import mainPosts from "./mainPosts";
 
-function Container() {
-  const [postForm, setPostForm] = useState(0);
+const Container = () => {
+  const [postForm, setPostForm] = useState(1);
   return (
     <div>
-      <Navbar />
-      <Header />
-
       <div className="container">
         <div className="content">
           <ContentRight user={postForm} change={setPostForm} />
@@ -26,11 +23,11 @@ function Container() {
         </div>
         <div className="clear" />
       </div>
-      {postForm ? <PostForm user={postForm} change={setPostForm} /> : null}
-
-      <Footer />
+      {postForm === 0 ? (
+        <PostForm user={postForm} change={setPostForm} />
+      ) : null}
     </div>
   );
-}
+};
 
 export default Container;

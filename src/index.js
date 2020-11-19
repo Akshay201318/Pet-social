@@ -10,7 +10,6 @@ import App from "./components/App";
 import user from "./Reducer";
 
 const store = createStore(user, composeWithDevTools(applyMiddleware(thunk)));
-console.log(store.getState());
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,124 +1,64 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+
+import { storeUser } from "../action";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import Header from "./Header";
-import { withRouter, Link } from "react-router-dom";
 import "../form.css";
-import { check_user } from "../action";
 
-//This is a custom hook for creating form inputs
-
-function useFormInputs(initialValue) {
-  const [value, setValue] = useState(initialValue);
-
-  function handleChange(e) {
-    const isCheckbox = e.target.type === "checkbox";
-
-    e.target.name == isCheckbox
-      ? setValue(e.target.checked)
-      : setValue(e.target.value);
-  }
-
-  function reset(e) {
-    const isCheckbox = e.target.type === "checkbox";
-    e.target.name == isCheckbox ? setValue(false) : setValue("");
-  }
-
-  return {
-    value,
-    handleChange,
-    reset,
-  };
-}
-
-function Login(props) {
+const Login = () => {
+  const userData = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  // for changing path on successfull login
-  function nextPath(path) {
-    props.history.push(path);
-  }
-
-  //creating all the form inputs and there handlers
-
-  const email = useFormInputs("");
-  const password = useFormInputs("");
-  const checkbox = useFormInputs(false);
-  const [emailErr, setEmailErr] = useState("");
-  const [passwordErr, setPasswordErr] = useState("");
-
-  //Validating form inputs
-
-  function validate() {
-    let flag = true;
-    console.log("Hello! validate");
-    if (email.value === undefined) {
-      setEmailErr("Email should not be empty!");
-      flag = false;
-    } else if (email.value.length < 8) {
-      setEmailErr("Please enter a valid email!");
-      flag = false;
-    } else if (!(email.value.includes("@") && email.value.includes(".com"))) {
-      setEmailErr("Please include an @ or .com in the email!");
-      flag = false;
-    } else {
-      setEmailErr("");
-    }
-    if (password.value === "") {
-      setPasswordErr("Password must not be empty!");
-      flag = false;
-    } else if (
-      !password.value.match(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-      )
-    ) {
-      setPasswordErr(
-        "Password must contains minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character!"
-      );
-      flag = false;
-    } else {
-      setPasswordErr("");
-    }
-    return flag;
-  }
+  const history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [checkbox, setCheckBox] = useState(false);
+  const [loginErr, setLoginErr] = useState("");
 
   //submit function for submitting login credentials
-
-  function handleSubmit(event) {
-    console.log("Hello! submit");
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const isValid = validate();
-    if (isValid) {
-      let user = {
-        email: email.value,
-        password: password.value,
-        checkbox: checkbox.value,
-      };
-
-      dispatch(check_user(user));
+    let user = {
+      email,
+      password,
+      checkbox,
+    };
+    let response = await axios.post("http://localhost:5000/login", {
+      data: user,
+    });
+    const data = JSON.stringify(response.data);
+    const userData = JSON.parse(data);
+    console.log("request:", userData);
+    if (userData) {
+      dispatch(storeUser(userData));
+      setEmail("");
+      setPassword("");
+      setLoginErr("");
+      setCheckBox(false);
+      console.log("this is users data!!!!", userData);
       alert("Successfully!! logged In!");
-      console.log(email.value);
-      console.log(password.value);
-      email.reset(event);
-      password.reset(event);
-      setEmailErr("");
-      setPasswordErr("");
-      return true;
+      history.push("/home");
+    } else {
+      setLoginErr("email or password is incorrect!");
+      alert("Login failed! login or password is not correct");
     }
-    return false;
-  }
+  };
 
   return (
     <div>
       <title>Login Account</title>
-      <Navbar />
-      <Header />
       <div className="container">
         <div className="content">
           <div className="content_rgt">
             <div className="login_sec">
               <h1>Log In</h1>
               <ul>
+                <li>
+                  <div style={{ color: "red" }}>{loginErr}</div>
+                </li>
                 <li>
                   <span>Email-ID</span>
                   <input
@@ -127,12 +67,9 @@ function Login(props) {
                     name="email"
                     placeholder="Enter your email"
                     value={email.value}
-                    onChange={(e) => email.handleChange(e)}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
-                </li>
-                <li>
-                  <div style={{ color: "red" }}>{emailErr}</div>
                 </li>
 
                 <li>
@@ -144,12 +81,9 @@ function Login(props) {
                     className="pw"
                     placeholder="Enter your password"
                     value={password.value}
-                    onChange={(e) => password.handleChange(e)}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                </li>
-                <li>
-                  <div style={{ color: "red" }}>{passwordErr}</div>
                 </li>
 
                 <li>
@@ -157,7 +91,7 @@ function Login(props) {
                     type="checkbox"
                     name="checkbox"
                     checked={checkbox.value}
-                    onChange={(e) => checkbox.handleChange(e)}
+                    onChange={(e) => setCheckBox((prevState) => !prevState)}
                   />
                   Remember Me
                 </li>
@@ -165,13 +99,7 @@ function Login(props) {
                 <li>
                   <input
                     type="submit"
-                    onClick={(e) => {
-                      let i = handleSubmit(e);
-                      console.log(i);
-                      if (i) {
-                        nextPath("/home");
-                      }
-                    }}
+                    onClick={(e) => handleSubmit(e)}
                     defaultValue="Log In"
                   />
                   <a href>Forgot Password</a>
@@ -198,9 +126,8 @@ function Login(props) {
         </div>
       </div>
       <div className="clear" />
-      <Footer />
     </div>
   );
-}
+};
 
-export default withRouter(Login);
+export default Login;

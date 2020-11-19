@@ -33,12 +33,12 @@ function useFormInputs(initialValue) {
   };
 }
 
-function Register(props) {
+const Register = (props) => {
   const dispatch = useDispatch();
   // for changing path on successfull Register
-  function nextPath(path) {
+  const nextPath = (path) => {
     props.history.push(path);
-  }
+  };
 
   //creating all the form inputs and there handlers
   const username = useFormInputs("");
@@ -194,8 +194,7 @@ function Register(props) {
   return (
     <div>
       <title>Create An Account</title>
-      <Navbar />
-      <Header />
+
       <div className="container">
         <div className="content">
           <div className="content_rgt">
@@ -332,9 +331,8 @@ function Register(props) {
         </div>
       </div>
       <div className="clear" />
-      <Footer />
     </div>
   );
-}
+};
 
 export default withRouter(Register);
