@@ -1,10 +1,11 @@
-.form {
-  position: absolute;
+/* .form {
+  position: ;
   border: 1px solid orange;
   height: 40vh;
   width: 40vw;
   display: block;
   background-color: papayawhip;
+  z-index: 1;
 }
 .form input {
   margin-top: 5%;
@@ -14,12 +15,23 @@
   background-color: rgba(207, 58, 58, 0.911);
   border: none;
   /* margin-top: 0%; */
-}
+/* }
 #formDiv {
-  margin-top: -200vh;
-  margin-left: 50vw;
-}
+  position: absolute;
+  /* margin-top: -200vh;
+  margin-left: 40vw; */
+/* }
 #name {
   margin-left: 5%;
   margin-top: 5%;
+} */
+
+#formDiv {
+  height: 500px;
+  width: 600px;
+  z-index: 1;
+  background-color: white;
+}
+#post {
+  height: 70px;
 }

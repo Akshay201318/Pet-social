@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
+import "bootstrap/dist/css/bootstrap.css";
 import "./index.css";
 import App from "./components/App";
 import user from "./Reducer";

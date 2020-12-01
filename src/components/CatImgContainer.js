@@ -22,7 +22,10 @@ function CatImgContainer() {
             </div>
           </div>
           <div className="div_image">
-            <img src="images/lft_img.png" alt="pet" />
+            <img
+              src="http://localhost:5000/undefined-1605789336344.png"
+              alt="pet"
+            />
           </div>
           <div className="div_btm">
             <div className="btm_list">

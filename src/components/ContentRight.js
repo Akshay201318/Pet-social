@@ -22,6 +22,7 @@ const ContentRight = (props) => {
             <img src="images/btn_sep.png" alt="sep" />
           </span>{" "}
           <a
+            className="text-light"
             onClick={(e) => {
               handlePost(e);
             }}
@@ -40,7 +41,7 @@ const ContentRight = (props) => {
           <a href="#">Invite Friends</a>{" "}
         </div>
         <div className="rght_cate">
-          <div className="rght_cate_hd" id="rght_cat_bg">
+          <div className="rght_cate_hd container-fluid" id="rght_cat_bg">
             Categories
           </div>
           <div className="rght_list">

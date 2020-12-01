@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <div className="header">
+    <div className="header container-fluid">
       <div className="header_lft">
         <div className="logo">
           <a href="#">
@@ -12,9 +13,9 @@ function Header() {
         <div className="navigatn">
           <ul>
             <li>
-              <a href="#" className="active">
-                Home
-              </a>
+              <Link to={"/home"}>
+                <a className="active">Home</a>
+              </Link>
             </li>
             <li>
               <a href="#"> E-Coupons </a>

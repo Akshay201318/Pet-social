@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "../postForm.css";
@@ -31,9 +32,12 @@ import "../postForm.css";
 
 function PostForm(props) {
   const userData = useSelector((state) => state.user);
+  const history = useHistory();
   const [selectedFile, setSelectedFile] = useState(null);
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState("");
   const [nameErr, setNameErr] = useState("");
+  const [categoryErr, setCategoryErr] = useState("");
   const [selectedFileErr, setSelectedFileErr] = useState("");
   // const formData = new FormData();
   // const handleImageUpload = (e) => {
@@ -56,6 +60,14 @@ function PostForm(props) {
     if (content === "") {
       setNameErr("This field should not be empty!");
       flag = false;
+    } else {
+      setNameErr("");
+    }
+    if (category === "") {
+      setCategoryErr("This field should not be empty!");
+      flag = false;
+    } else {
+      setCategoryErr("");
     }
 
     if (selectedFile === null) {
@@ -64,6 +76,7 @@ function PostForm(props) {
     } else {
       setSelectedFileErr("");
     }
+
     return flag;
   };
 
@@ -87,7 +100,10 @@ function PostForm(props) {
       const formData = new FormData();
       formData.append("mypost", selectedFile);
       formData.append("content", content);
-      formData.append("user", userData[0]._id);
+      formData.append("category", category);
+      formData.append("firstname", userData.firstName);
+      formData.append("lastname", userData.lastName);
+      formData.append("email", userData.email);
       // const post = {
       //   content: content,
       //   avatar: selectedFile.name,
@@ -107,7 +123,12 @@ function PostForm(props) {
         formData,
         headers
       );
-      console.log("Response is equal to", response.data.avatar);
+      if (response) {
+        props.setPostsRender(props.postsRender + 1);
+        console.log("Thindblnscsncxbsj", props.postsRender);
+        // history.push("/login");
+        // history.push("/home");
+      }
       setContent("");
       setSelectedFile(null);
       setSelectedFileErr("");
@@ -117,7 +138,10 @@ function PostForm(props) {
   };
 
   return (
-    <div id="formDiv">
+    <div
+      id="formDiv"
+      className="container rounded fixed-top d-flex align-items-center justify-content-center border border-warning"
+    >
       <form
         id="postForm"
         className="form"
@@ -127,29 +151,53 @@ function PostForm(props) {
         <button id="cancel" type="button" onClick={handlePost}>
           &#10006;
         </button>
-        <textarea
-          id="name"
-          type="text"
-          content="name"
-          placeholder="Type here....."
-          rows="5"
-          cols="50"
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
-          required
-        />
-        <div style={{ color: "red" }}>{nameErr}</div>
-        <input
-          type="file"
-          name="avatar"
-          id="post"
-          placeholder="post"
-          onChange={(e) => setSelectedFile(e.target.files[0])}
-          required
-        />
-        <div style={{ color: "red" }}>{selectedFileErr}</div>
-        <input type="submit" defaultValue="upload" onClick={uploadHandler} />
+        <div className="form-group">
+          <textarea
+            className="form-control text-center rounded-pill form-control-lg"
+            id="name"
+            type="text"
+            content="name"
+            placeholder="Type here....."
+            rows="5"
+            cols="50"
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+            required
+          />
+          <div style={{ color: "red" }}>{nameErr}</div>
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control rounded-pill form-control-lg"
+            name="category"
+            placeholder="Enter category..."
+            onChange={(e) => {
+              setCategory(e.target.value);
+            }}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            className="form-control rounded-pill form-control-lg"
+            type="file"
+            name="avatar"
+            id="post"
+            placeholder="post"
+            onChange={(e) => setSelectedFile(e.target.files[0])}
+            required
+          />
+          <div style={{ color: "red" }}>{selectedFileErr}</div>
+        </div>
+        <div className="form-group">
+          <input
+            type="submit"
+            className="form-control rounded-pill form-control-lg"
+            defaultValue="upload"
+            onClick={uploadHandler}
+          />
+        </div>
       </form>
     </div>
   );

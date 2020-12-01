@@ -3,7 +3,7 @@ import React from "react";
 function Footer() {
   return (
     <div>
-      <div className="footr">
+      <div className="footr container-fluid">
         <div className="footr_lft">
           <div className="footer_div1">
             Copyright © Pet-Socail 2014 All Rights Reserved
